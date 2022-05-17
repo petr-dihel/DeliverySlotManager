@@ -1,0 +1,14 @@
+server:
+  port : 8081
+spring:
+  datasource:
+    url: jdbc:h2:file:~/vea22.h2
+  messages:
+    basename: messages
+  thymeleaf:
+    cache: false
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+accessType: jpa

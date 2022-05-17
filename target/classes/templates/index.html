@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:replace="components :: head"></div>
+
+  <body>
+	
+	 <div th:replace="components :: navbar(${userName}, ${userRole})"></div>
+	
+    <div class="container">
+
+		<h2>Deliveries</h2>
+		<span th:if="${userRole == 'ROLE_ADMIN'}">
+			<form action="/" method="GET">
+				 <div th:replace="components :: select(${selectInput})"></div>
+				<input type="submit" class="btn btn-success" value="Filter">
+			</form>
+		</span>
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Delivery ID</th>
+					<th>Slot Number</th>
+					<th>Delivery Date</th>
+					<th>Address </th>
+					<th>Package </th>
+					<th>Customer Name</th>
+					<th>Customer PhoneNumber</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="row : ${rows}">
+					<td th:each="column : ${row}" th:text="${column}"></td>
+				</tr>
+			</tbody>
+		</table>  
+    </div>
+    
+  </body>
+
+</html>

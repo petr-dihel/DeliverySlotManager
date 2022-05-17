@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <div th:replace="components :: head"></div>
+
+  <body>
+  
+ <div th:replace="components :: navbar(${userName}, ${userRole})"></div>
+  <div class="container">
+
+	  <h1 th:text="${#strings.capitalize(entityName)} + ' ' + list">List</h1>
+  	   	<div th:if="${flashMessage != null}" >
+			<div th:text="${flashMessage.getMessage()}" th:class="'alert alert-' + ${flashMessage.getType()}">
+				text
+			</div>
+		</div>
+	  <a th:href="@{/}" href="" class="btn btn-secondary">Home</a>
+	  <a th:href="@{/__(${entityName})__/create}" href="" class="btn btn-success">Create New</a>
+	  
+	  <div th:replace="components :: table(${entityfields}, ${entities}, ${entityName})"></div>
+
+	</div>
+  </body>
+
+</html>

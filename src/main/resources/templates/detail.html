@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <div th:replace="components :: head"></div>
+
+  <head>
+    <title th:text="${action}">Detail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+
+  <body>
+  
+	 <div th:replace="components :: navbar(${userName}, ${userRole})"></div>
+  	<div class="container">
+    <h1 th:text="${#strings.capitalize(action)} + ' ' + ${entityName}"></h1>
+		
+   	<div th:if="${flashMessage != null}" >
+			<div th:text="${flashMessage.getMessage()}" th:class="'alert alert-' + ${flashMessage.getType()}">
+				text
+			</div>
+		</div>
+		
+	 	<form th:action="@{/__(${entityName})__/save}" method="post" th:object="${formEntity}">
+	 		<div th:each="entityfield: ${entityfields}">
+		 		<div class="" th:object="${formEntity}">
+		 				<label th:for="${entityfield.getName()}" > 			
+			 				<span th:if="${entityfield.getAnnotation(typeClass).type() != 'hidden'}">
+			 					<span th:text="${#strings.capitalize(entityfield.getName())} + ':'">Label:</span>
+			 				</span>		
+			 				
+						</label>	
+	 						<input
+		 						th:id="${entityfield.getName()}"
+		 						th:type="${entityfield.getAnnotation(typeClass).type()}" 
+		 						th:name=${entityfield.getName()} 
+		 						th:field="*{__(${entityfield.getName()})__}"
+		 						th:disabled="${action} == 'detail'? 'disabled' : 'false'"
+		 						class="form-control"
+	 						>					
+						<div th:if="${bindingResult != null}">
+							
+							<div th:if='${bindingResult.getFieldError("__(${entityfield.getName()})__")}'>
+								<div class="alert alert-danger" th:text='${bindingResult.getFieldError("__(${entityfield.getName()})__").getDefaultMessage()}'>
+								</div>
+							</div>	
+						</div>					
+							
+		 		</div>
+	 		</div>
+	 		
+	 		<div th:each="selectInput: ${selectInputs}">
+	 				 <div th:replace="components :: select(${selectInput})"></div>
+	 		</div>
+	 		
+	 		<div class="row "> 			
+	 			<a th:href="@{/__(${entityName})__/list}" class="btn btn-secondary col-md-3" >Back to list</a>
+	 		
+				<div th:if="${action} != 'detail'" class="col-md-3">
+					<input type="submit" class="btn btn-success col-md-12" value="Submit" >
+				</div>
+	 		</div>
+	 		
+		</form>
+		
+		
+	  <span th:each="listEntity: ${listEntities}" >
+	  	<h2 th:text="${#strings.capitalize(listEntity.entityName)}"></h2>
+		<div th:replace="components :: table(${listEntity.fields}, ${listEntity.entities}, ${listEntity.entityName})"></div>
+	  </span>
+	  
+	</div>
+	
+  </body>
+</html>
